@@ -134,6 +134,33 @@ plot4 = ggplot(data= distrib.tibble4)+                                          
 
 
 
+################################################
+###               TASK 2                    ####
+################################################
+
+
+beta.moment = function(alpha, beta, k, centered) {
+  if (centered) { #Calculating the centered
+    integrand = function(x) {
+      (x-(x*dbeta(x,alpha,beta)))^k*dbeta(x,alpha,beta)
+    }
+    result = integrate(integrand, 0, 1)
+  }
+  else{ #Calculating uncentered
+    integrand = function(x) {x^k * dbeta(x,alpha,beta)}
+    result = integrate(integrand, 0, 1)
+  }
+  return(result)
+}
+
+###Testing function
+#Testing Variance
+beta.moment(2,5,3,T)
+sd1
+
+#Testing Kurtosis
+(beta.moment(2,5,4,T)/(beta.moment(2,5,2,T))^2)-3
+kurt1
 
 
 
