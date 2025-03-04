@@ -4,12 +4,41 @@ library(tidyverse)
 #####     TASK ONE: Describing distribution     ######
 ######################################################
 
-#Making a function that allows alpha and beta values to change
+#######################
+#Making function for mean, variance, skewness and kurtosis
+######################
+#Calculating mean
+mean.calc = function(alpha, beta){
+  mean = alpha/(alpha+beta)
+  return(mean)
+}
 
+#Calculating Variance
+variance.calc = function(alpha, beta){
+  sd = sqrt((alpha*beta)/((alpha+beta)^2*(alpha+beta+1)))
+  return(sd)
+}
+
+#Calculating Skewness
+skew.calc = function(alpha, beta){
+  skew = (2*(beta-alpha)*sqrt(alpha+beta+1))/((alpha+beta+2)*sqrt(alpha*beta))
+  return(skew)
+}
+
+#Calculating Kurtosis
+kurt.calc = function(alpha, beta){
+  kurt.num = 6*((alpha-beta)^2*(alpha+beta+1)-alpha*beta*(alpha+beta+2))
+  kurt.denum = alpha*beta*(alpha+beta+2)*(alpha+beta+3)
+  kurt = kurt.num/kurt.denum
+  return(kurt)
+}
+
+
+#Making a function to calculate distribution tibble
 distribution.func = function(alpha, beta){
   
-  mean = alpha/(alpha+beta)
-  sd = sqrt((alpha*beta)/((alpha+beta)^2*(alpha+beta+1)))
+  mean = mean.calc(alpha, beta)
+  sd = variance.calc(alpha, beta)
   
   distribute.dat <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
     mutate(beta.pdf = dbeta(x, alpha, beta),                      # compute the beta PDF
@@ -27,11 +56,37 @@ beta = 5
 mean = alpha/(alpha+beta)
 sd = sqrt((alpha*beta)/((alpha+beta)^2*(alpha+beta+1)))
 
-###Making a tibble for each parameter
-distrib.tibble1 = distribution.func(2,5) #Alpha = 2, Beta = 5
-distrib.tibble2 = distribution.func(5,5) #Alpha = 5, Beta = 5
-distrib.tibble3 = distribution.func(5,2) #Alpha = 5, Beta = 2
-distrib.tibble4 = distribution.func(0.50,0.50) #Alpha = 0.5, Beta = 0.5
+###Making a tibble for each parameter and getting values
+#Alpha = 2, Beta = 5
+distrib.tibble1 = distribution.func(2,5)
+mean1 = mean.calc(2,5)
+sd1 = variance.calc(2,5)
+skew1 = skew.calc(2,5)
+kurt1 = kurt.calc(2,5)
+
+
+#Alpha = 5, Beta = 5
+distrib.tibble2 = distribution.func(5,5)
+mean2 = mean.calc(5,5)
+sd2 = variance.calc(5,5)
+skew2 = skew.calc(5,5)
+kurt2 = kurt.calc(5,5)
+
+
+#Alpha = 5, Beta = 2
+distrib.tibble3 = distribution.func(5,2)
+mean3 = mean.calc(5,2)
+sd3 = variance.calc(5,2)
+skew3 = skew.calc(5,2)
+kurt3 = kurt.calc(5,2)
+
+
+#Alpha = 0.5, Beta = 0.5
+distrib.tibble4 = distribution.func(0.5,0.5)
+mean4 = mean.calc(0.5,0.5)
+sd4 = variance.calc(0.5,0.5)
+skew4 = skew.calc(0.5,0.5)
+kurt4 = kurt.calc(0.5,0.5)
 
 ####################
 ###Making a plot for each of the 4 tibbles
@@ -77,11 +132,7 @@ plot4 = ggplot(data= distrib.tibble4)+                                          
   scale_color_manual("", values = c("black", "grey"))+                 # change colors
   theme(legend.position = "bottom")                                    # move legend to bottom
 
-#######################
-#Making function for mean, variance, skewness and kurtosis
-######################
 
-mean.calc
 
 
 
