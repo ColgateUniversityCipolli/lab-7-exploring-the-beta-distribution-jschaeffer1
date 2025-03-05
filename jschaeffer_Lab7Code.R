@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggplot2)
 
 ######################################################
 #####     TASK ONE: Describing distribution     ######
@@ -50,11 +51,6 @@ distribution.func = function(alpha, beta){
   #Returning our created tibble
 }
 
-alpha = 2
-beta = 5
-
-mean = alpha/(alpha+beta)
-sd = sqrt((alpha*beta)/((alpha+beta)^2*(alpha+beta+1)))
 
 ###Making a tibble for each parameter and getting values
 #Alpha = 2, Beta = 5
@@ -140,10 +136,13 @@ plot4 = ggplot(data= distrib.tibble4)+                                          
 
 
 beta.moment = function(alpha, beta, k, centered) {
-  if (centered) { #Calculating the centered
-    integrand = function(x) {
-      (x-(x*dbeta(x,alpha,beta)))^k*dbeta(x,alpha,beta)
-    }
+  if (centered) { #Calculating the centered value
+    #calculating E(X)
+    integrand = function(x) {x*dbeta(x,alpha,beta)}
+    EX = integrate(integrand, 0, 1)$value
+    
+    #Calculating centered value
+    integrand = function(x) {((x-EX)^k)*dbeta(x,alpha,beta)}
     result = integrate(integrand, 0, 1)
   }
   else{ #Calculating uncentered
@@ -154,15 +153,77 @@ beta.moment = function(alpha, beta, k, centered) {
 }
 
 ###Testing function
+#Testing Mean
+beta.moment(2,5,1,F)
+mean1
+
 #Testing Variance
-beta.moment(2,5,3,T)
-sd1
+beta.moment(2,5,2,T)
+sd1^2
+
+#Testing Skew
+beta.moment(2,5,3,T)$value/(beta.moment(2,5,2,T)$value^(3/2))
+skew1
 
 #Testing Kurtosis
-(beta.moment(2,5,4,T)/(beta.moment(2,5,2,T))^2)-3
+(beta.moment(2,5,4,T)$value/(beta.moment(2,5,2,T)$value)^2)-3
 kurt1
 
+###############################################
+#####               TASK THREE            #####
+###############################################
+set.seed(7272) # Set seed so we all get the same results.
 
+sample_func = function(n, alpha, beta){
+  
+  sample.size <- n # Specify sample details
+  beta.sample <- rbeta(n = sample.size,  # sample size
+                       shape1 = alpha,   # alpha parameter
+                       shape2 = beta)    # beta parameter
+  return(beta.sample)
+}
+
+####Making density plots
+#Alpha = 2, Beta = 5
+sample1 = sample_func(500, 2, 5)
+
+density_plot1 = ggplot() + 
+  geom_histogram(aes(sample1, y=after_stat(density))) +
+  geom_density(aes(sample1)) + 
+  geom_hline(yintercept=0)
+
+
+#Alpha = 5, Beta = 5
+sample2 = sample_func(500, 5, 5)
+
+density_plot2 = ggplot() + 
+  geom_histogram(aes(sample2, y=after_stat(density))) +
+  geom_density(aes(sample2)) + 
+  geom_hline(yintercept=0)
+
+
+#Alpha = 5, Beta = 2
+sample3 = sample_func(500,5,2)
+
+density_plot3 = ggplot() + 
+  geom_histogram(aes(sample3, y=after_stat(density))) +
+  geom_density(aes(sample3)) +
+  geom_hline(yintercept=0)
+
+
+#Alpha = 0.5, Beta = 0.5
+sample4 = sample_func(500,0.5,0.5)
+
+density_plot4 = ggplot() + 
+  geom_histogram(aes(sample4, y=after_stat(density))) +
+  geom_density(aes(sample4)) +
+  geom_hline(yintercept=0)
+
+
+summary1 %>%
+  summarize(mean = mean(sample1),
+            variance = var(sample1),
+            skewness = )
 
 
 
