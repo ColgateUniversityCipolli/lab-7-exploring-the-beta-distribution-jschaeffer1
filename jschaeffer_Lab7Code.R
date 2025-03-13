@@ -222,10 +222,10 @@ density_plot4 = ggplot() +
   geom_hline(yintercept=0)
 
 
-summary1 %>%
-  summarize(mean = mean(sample1),
-            variance = var(sample1),
-            skewness = )
+#summary1 %>%
+#  summarize(mean = mean(sample1),
+ #           variance = var(sample1),
+ #           skewness = )
 
 
 ##############################################
@@ -311,6 +311,35 @@ ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample da
   ylab("Deaths per Person in 2022") +
   xlab("Density")
 
+############################################
+######            TASK 8              ######
+############################################
+sample_func = function(n, alpha, beta){
+  
+  sample.size <- n # Specify sample details
+  beta.sample <- rbeta(n = sample.size,  # sample size
+                       shape1 = alpha,   # alpha parameter
+                       shape2 = beta)    # beta parameter
+  return(beta.sample)
+}
+
+
+#Initializing values
+alpha = 8
+beta = 950
+n = 266
+estimates.data = data.frame(iteration = numeric(),
+                            MOM = numeric(),
+                            MLE = numeric())
+
+
+for (i in 1:1000){
+  set.seed(7272+i)
+  sample.mom = rgamma(n, alpha, beta)
+  mean = mean(sample.mom)
+  variance = var()
+  
+}
 
 
 
