@@ -1,5 +1,7 @@
 library(tidyverse)
 library(ggplot2)
+library(patchwork)
+library(nleqslv)
 
 ######################################################
 #####     TASK ONE: Describing distribution     ######
@@ -224,6 +226,100 @@ summary1 %>%
   summarize(mean = mean(sample1),
             variance = var(sample1),
             skewness = )
+
+
+##############################################
+###             TASK 6                    ####
+##############################################
+death.data = read_csv("death.data.test.csv") #Pulling data
+
+
+#Keeping only data from 2022
+death.data <- death.data %>%
+  select(1:2, `2022`) %>%
+  mutate(`2022` = `2022` / 1000) #Convering to rate out of 1
+
+
+##############################################
+####            TASK 7                    ####
+##############################################
+
+##############
+# CACLULATING MOM
+##############
+MOM.gamma <- function(data, par){
+  alpha <- par[1]
+  beta <- par[2]
+  
+  EX1 <- alpha/beta
+  EX2 <- alpha*(alpha+1)/beta^2
+  
+  m1 <- mean(data, na.rm = T)
+  m2 <- mean(data^2, na.rm = T)
+  
+  return( c(EX1 - m1, EX2 - m2) )
+}
+
+#Using function to find actual alpha and beta values
+moms<- nleqslv(x = c(5, 1000),
+                fn = MOM.gamma,
+                data=death.data$`2022`)
+
+alpha.hat.mom = moms$x[1]
+beta.hat.mom = moms$x[2]
+
+
+#####################
+# CALCULATING MLE
+#####################
+
+llgamma <- function(data, par, neg=F){
+  alpha <- par[1]
+  beta <- par[2]
+  
+  loglik <- sum(log(dgamma(x=data, shape=alpha, rate=beta)), na.rm = T)
+  
+  return(ifelse(neg, -loglik, loglik))
+}
+
+#Using function to find actual alpha/beta values
+(mles <- optim(par = c(5,1000),
+               fn = llgamma,
+               data=death.data$`2022`,
+               neg=T))
+alpha.hat.mle <- mles$par[1]
+beta.hat.mle <- mles$par[2]
+
+#################
+# PLOTTING
+#################
+#Getting data to plot from MOM and MLE
+ggdat.gamma <- tibble(x=seq(0,0.025, length.out=1000))|>
+  mutate(mom.pdf = dgamma(x=x, shape=alpha.hat.mom, rate=beta.hat.mom),
+         mle.pdf = dgamma(x=x, shape=alpha.hat.mle, rate=beta.hat.mle))
+
+
+###Plotting the graph
+ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample data
+  geom_histogram(bins = 30) + #Histogram plot
+  geom_hline(yintercept=0)+ #Making y intercept line
+  theme_bw() +
+  geom_line(data=ggdat.gamma,
+            aes(x=x, y=mom.pdf, color="MOM")) + #Calculating MOM line
+  geom_line(data=ggdat.gamma,
+            aes(x=x, y=mle.pdf, color="MLE")) + #Calculating MLE line
+  ylab("Deaths per Person in 2022") +
+  xlab("Density")
+
+
+
+
+
+
+
+
+
+
 
 
 
