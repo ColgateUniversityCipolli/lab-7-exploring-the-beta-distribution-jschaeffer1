@@ -306,6 +306,7 @@ sample.summaries = sample.df |>
     )
   )
 
+view(sample.summaries)
 
 
 
@@ -390,9 +391,82 @@ samplesize.comparison = (mean.plot | var.plot) / (skew.plot | kurt.plot)
 ##############################################
 ####              TASK 5                  ####
 ##############################################
+#Making empty dataframe
+statistic_df <- tibble(
+  mean = numeric(),
+  variance = numeric(),
+  skewness = numeric(),
+  kurtosis = numeric()
+)
 
 
+#Making a for loop for generating statistics
+for(i in 1:1000){
+  set.seed(7272+i)
+  sample = sample_func(500,2,5)
+  
+  #Calculating statistical values
+  mean = mean(sample)
+  variance = var(sample)
+  skewness = skewness(sample)
+  kurtosis = kurtosis(sample)
+  
+  #Adding values to dataframe
+  new_row = tibble(mean = mean, variance = variance, skewness =skewness, kurtosis = kurtosis)
+  statistic_df = bind_rows(statistic_df, new_row)
+}
 
+statistic_summary = statistic_df |>
+  summarize(
+    mean_mean = mean(mean),
+    mean_variance = var(mean),
+    mean_skewness = skewness(mean),
+    mean_kurtosis = kurtosis(mean),
+    
+    variance_mean = mean(variance),
+    variance_variance = var(variance),
+    variance_skewness = skewness(variance),
+    variance_kurtosis = kurtosis(variance),
+    
+    skewness_mean = mean(skewness),
+    skewness_variance = var(skewness),
+    skewness_skewness = skewness(skewness),
+    skewness_kurtosis = kurtosis(skewness),
+    
+    kurtosis_mean = mean(kurtosis),
+    kurtosis_variance = var(kurtosis),
+    kurtosis_skewness = skewness(kurtosis),
+    kurtosis_kurtosis = kurtosis(kurtosis)
+  )|>
+  #Reorganizing table
+  pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_")
+
+#view(statistic_summary)
+
+###Plotting the graphs
+mean.plot.task5 = ggplot(statistic_df, aes(x = mean, y=after_stat(density))) + #Plotting sample data
+  geom_histogram(bins = 30) + #Histogram plot
+  geom_density() +
+  geom_hline(yintercept=0)+ #Making y intercept line
+  theme_bw()
+
+var.plot.task5 = ggplot(statistic_df, aes(x = variance, y=after_stat(density))) + #Plotting sample data
+  geom_histogram(bins = 30) + #Histogram plot
+  geom_density() +
+  geom_hline(yintercept=0)+ #Making y intercept line
+  theme_bw()
+
+skew.plot.task5 = ggplot(statistic_df, aes(x = skewness, y=after_stat(density))) + #Plotting sample data
+  geom_histogram(bins = 30) + #Histogram plot
+  geom_density() +
+  geom_hline(yintercept=0)+ #Making y intercept line
+  theme_bw()
+
+kurt.plot.task5 = ggplot(statistic_df, aes(x = kurtosis, y=after_stat(density))) + #Plotting sample data
+  geom_histogram(bins = 30) + #Histogram plot
+  geom_density() +
+  geom_hline(yintercept=0)+ #Making y intercept line
+  theme_bw()
 
 
 
@@ -405,7 +479,7 @@ death.data = read_csv("death.data.test.csv") #Pulling data
 #Keeping only data from 2022
 death.data <- death.data %>%
   select(1:2, `2022`) %>%
-  mutate(`2022` = `2022` / 1000) #Convering to rate out of 1
+  mutate(`2022` = `2022` / 1000) #Converting to rate out of 1
 
 
 ##############################################
