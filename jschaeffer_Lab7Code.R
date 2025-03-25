@@ -147,6 +147,8 @@ distribution.table = tibble(
 
 
 
+
+
 ################################################
 ###               TASK 2                    ####
 ################################################
@@ -185,6 +187,10 @@ skew1
 #Testing Kurtosis
 (beta.moment(2,5,4,T)$value/(beta.moment(2,5,2,T)$value)^2)-3
 kurt1
+
+
+
+
 
 ###############################################
 #####               TASK THREE            #####
@@ -300,7 +306,9 @@ sample.summaries = sample.df |>
     )
   )
 
-view(sample.summaries)
+
+
+
 
 ##############################################
 ####             TASK 4                   ####
@@ -310,28 +318,32 @@ view(sample.summaries)
 mean.plot = ggplot() +
   geom_hline(yintercept=mean1) +
   theme_bw() +
-  ylab("Density") +
+  ylab("Value") +
+  xlab("Sample Size") +
   ggtitle("Mean")
 
 #Plot 2 (Variance)
 var.plot = ggplot() +
   geom_hline(yintercept=sd1) +
   theme_bw() +
-  ylab("Density") +
+  ylab("Value") +
+  xlab("Sample Size") +
   ggtitle("Variance")
 
 #Plot 3 (skew)
 skew.plot = ggplot() +
   geom_hline(yintercept=skew1) +
   theme_bw() +
-  ylab("Density") +
+  ylab("Value") +
+  xlab("Sample Size") +
   ggtitle("Skewness")
 
 #Plot 4 (kurtosis)
 kurt.plot = ggplot() +
-  geom_hline(yintercept=kurt1) +
+  geom_hline(yintercept=kurt1+3) +
   theme_bw() +
-  ylab("Density") +
+  ylab("Value") +
+  xlab("Sample Size") +
   ggtitle("Kurtosis")
 
 
@@ -342,18 +354,42 @@ for (i in 2:50){
   sample = sample_func(500,2,5)
   
   #Calculating cumulative values
-  mean = mean(sample)
-  variance = var(sample)
-  skewness = skewness(sample)
-  kurtosis = kurtosis(sample)
+  mean = cummean(sample)
+  variance = cumvar(sample)
+  skewness = cumskew(sample)
+  kurtosis = cumkurt(sample)
+  
+  #Making dataframe for each value
+  mean_df <- tibble(x = seq_along(mean), y = mean)
+  var_df <- tibble(x = seq_along(variance), y = variance)
+  skew_df <- tibble(x = seq_along(skewness), y = skewness)
+  kurt_df <- tibble(x = seq_along(kurtosis), y = kurtosis)
+  
+  
   
   #Adding values to original plots
-   <- plot.on.og.sample +
-    geom_line(data=new.data, aes(x=x, y=y), color=i)
+  mean.plot <- mean.plot +
+    geom_line(data = mean_df, aes(x=x, y=y), color=i)
   
+  var.plot <- var.plot +
+    geom_line(data = var_df, aes(x=x, y=y), color=i)
+  
+  skew.plot <- skew.plot +
+    geom_line(data = skew_df, aes(x=x, y=y), color=i)
+  
+  kurt.plot <- kurt.plot +
+    geom_line(data = kurt_df, aes(x=x, y=y), color=i)
   
 }
 
+samplesize.comparison = (mean.plot | var.plot) / (skew.plot | kurt.plot)
+
+
+
+
+##############################################
+####              TASK 5                  ####
+##############################################
 
 
 
@@ -442,6 +478,11 @@ mlemom.plot = ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plot
             aes(x=x, y=mle.pdf, color="MLE")) + #Calculating MLE line
   ylab("Deaths per Person in 2022") +
   xlab("Density")
+
+
+
+
+
 
 ############################################
 ######            TASK 8              ######
