@@ -3,6 +3,7 @@ library(ggplot2)
 library(patchwork)
 library(nleqslv)
 library(e1071)
+library(cumstats)
 
 ######################################################
 #####     TASK ONE: Describing distribution     ######
@@ -131,6 +132,19 @@ plot4 = ggplot(data= distrib.tibble4)+                                          
   scale_color_manual("", values = c("black", "grey"))+                 # change colors
   theme(legend.position = "bottom")                                    # move legend to bottom
 
+########################
+## MAKING TABLE OF VALUES
+########################
+
+distribution.table = tibble(
+  Values = c("Alpha = 2, Beta = 5", "Alpha = 5, Beta = 5",
+             "Alpha = 5, Beta = 2", "Alpha = 0.5, Beta = 0.5"),
+  Mean = c(mean1, mean2, mean3, mean4),
+  SD = c(sd1, sd2, sd3, sd4),
+  Skew = c(skew1, skew2, skew3, skew4),
+  Kurtosis = c(kurt1, kurt2, kurt3, kurt4)
+)
+
 
 
 ################################################
@@ -251,36 +265,103 @@ sample.df <- tibble(
 sample.summaries = sample.df |>
  summarize(
           #calculating for sample 1
-          mean_sample1 = mean(Sample1),
-          variance_sample1 = var(Sample1),
-          skewness_sample1 = skewness(Sample1),
-          kurtosis_sample1 = kurtosis(Sample1),
+          sample1_mean = mean(Sample1),
+          sample1_variance = var(Sample1),
+          sample1_skewness = skewness(Sample1),
+          sample1_kurtosis = kurtosis(Sample1),
           
           #Calculating for sample 2
-          mean_sample2 = mean(Sample2),
-          variance_sample2 = var(Sample2),
-          skewness_sample2 = skewness(Sample2),
-          kurtosis_sample2 = kurtosis(Sample2),
+          sample2_mean = mean(Sample2),
+          sample2_variance = var(Sample2),
+          sample2_skewness = skewness(Sample2),
+          sample2_kurtosis = kurtosis(Sample2),
           
-          #Calculating for sample 2
-          mean_sample3 = mean(Sample3),
-          variance_sample3 = var(Sample3),
-          skewness_sample3 = skewness(Sample3),
-          kurtosis_sample3 = kurtosis(Sample3),
+          #Calculating for sample 3
+          sample3_mean = mean(Sample3),
+          sample3_variance = var(Sample3),
+          sample3_skewness = skewness(Sample3),
+          sample3_kurtosis = kurtosis(Sample3),
           
           #Calculating for sample 4
-          mean_sample4 = mean(Sample4),
-          variance_sample4 = var(Sample4),
-          skewness_sample4 = skewness(Sample4),
-          kurtosis_sample4 = kurtosis(Sample4),
+          sample4_mean = mean(Sample4),
+          sample4_variance = var(Sample4),
+          sample4_skewness = skewness(Sample4),
+          sample4_kurtosis = kurtosis(Sample4)
           )|>
   #Reorganizing table
-  pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_")
+  pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_") |>
+  mutate(
+    Variable = recode(
+      Variable,
+      "sample1" = "Alpha = 2, Beta = 5",
+      "sample2" = "Alpha = 5, Beta = 5",
+      "sample3" = "Alpha = 5, Beta = 2",
+      "sample4" = "Alpha = 0.5, Beta = 0.5"
+    )
+  )
+
+view(sample.summaries)
+
+##############################################
+####             TASK 4                   ####
+##############################################
+#Making plots that will be added to
+#Plot 1 (mean)
+mean.plot = ggplot() +
+  geom_hline(yintercept=mean1) +
+  theme_bw() +
+  ylab("Density") +
+  ggtitle("Mean")
+
+#Plot 2 (Variance)
+var.plot = ggplot() +
+  geom_hline(yintercept=sd1) +
+  theme_bw() +
+  ylab("Density") +
+  ggtitle("Variance")
+
+#Plot 3 (skew)
+skew.plot = ggplot() +
+  geom_hline(yintercept=skew1) +
+  theme_bw() +
+  ylab("Density") +
+  ggtitle("Skewness")
+
+#Plot 4 (kurtosis)
+kurt.plot = ggplot() +
+  geom_hline(yintercept=kurt1) +
+  theme_bw() +
+  ylab("Density") +
+  ggtitle("Kurtosis")
+
+
+
+#Making for loop to simulate data
+for (i in 2:50){
+  set.seed(7272+i)
+  sample = sample_func(500,2,5)
+  
+  #Calculating cumulative values
+  mean = mean(sample)
+  variance = var(sample)
+  skewness = skewness(sample)
+  kurtosis = kurtosis(sample)
+  
+  #Adding values to original plots
+   <- plot.on.og.sample +
+    geom_line(data=new.data, aes(x=x, y=y), color=i)
+  
+  
+}
+
+
+
+
 
 
 
 ##############################################
-###             TASK 6                    ####
+####              TASK 6                  ####
 ##############################################
 death.data = read_csv("death.data.test.csv") #Pulling data
 
