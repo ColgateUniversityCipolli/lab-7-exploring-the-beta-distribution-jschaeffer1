@@ -283,10 +283,10 @@ llbeta <- function(data, par, neg=F){
 }
 
 #Using function to find actual alpha/beta values
-(mles <- optim(par = c(5,1000),
+mles <- optim(par = c(5,1000),
                fn = llbeta,
                data=death.data$`2022`,
-               neg=T))
+               neg=T)
 alpha.hat.mle <- mles$par[1]
 beta.hat.mle <- mles$par[2]
 
@@ -314,28 +314,40 @@ ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample da
 ############################################
 ######            TASK 8              ######
 ############################################
-sample_func = function(n, alpha, beta){
-  
-  sample.size <- n # Specify sample details
-  beta.sample <- rbeta(n = sample.size,  # sample size
-                       shape1 = alpha,   # alpha parameter
-                       shape2 = beta)    # beta parameter
-  return(beta.sample)
-}
-
 
 #Initializing values
 alpha = 8
 beta = 950
 n = 266
 estimates.data = data.frame(iteration = numeric(),
-                            MOM = numeric(),
-                            MLE = numeric())
+                            alpha.mom = numeric(),
+                            beta.mom = numeric(),
+                            alpha.mle = numeric(),
+                            beta.mle = numeric())
 
 
 for (i in 1:1000){
   set.seed(7272+i) #Setting seed
-
+  
+  sample = rbeta(n, alpha, beta)
+  moms<- nleqslv(x = c(5, 1000),
+                 fn = MOM.beta,
+                 data=sample)
+  
+  mles <- optim(par = c(5,1000),
+                fn = llbeta,
+                data=sample,
+                neg=T)
+  
+  new.row = data.frame(i, moms$x[1], moms$x[2], mles$par[1], mles$par[2])
+  
+  #Adding values into dataframe
+  estimates.data[i,1] = i
+  estimates.data[i,2] = moms$x[1]
+  estimates.data[i,3] = moms$x[2]
+  estimates.data[i,4] = mles$par[1]
+  estimates.data[i,5] = mles$par[2]
+  
   
   #Calculating sample
   sample = rgamma(n, alpha, beta)
