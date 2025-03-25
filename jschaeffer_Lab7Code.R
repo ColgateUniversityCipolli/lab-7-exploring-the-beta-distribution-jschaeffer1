@@ -300,7 +300,7 @@ ggdat.beta <- tibble(x=seq(0,0.025, length.out=1000))|>
 
 
 ###Plotting the graph
-ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample data
+mlemom.plot = ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample data
   geom_histogram(bins = 30) + #Histogram plot
   geom_hline(yintercept=0)+ #Making y intercept line
   theme_bw() +
@@ -325,7 +325,7 @@ estimates.data = data.frame(iteration = numeric(),
                             alpha.mle = numeric(),
                             beta.mle = numeric())
 
-
+#view(estimates.data)
 for (i in 1:1000){
   set.seed(7272+i) #Setting seed
   
@@ -348,18 +348,53 @@ for (i in 1:1000){
   estimates.data[i,4] = mles$par[1]
   estimates.data[i,5] = mles$par[2]
   
+  #Plotting values in a geom_density 2x2
+  #Calculating Graph for the mom alpha estimates
+  momA = ggplot(estimates.data, aes(x = alpha.mom)) +
+    geom_density() +
+    geom_hline(yintercept=0) +
+    theme_bw() +
+    xlab("Alpha (MOM estimate)") +
+    ylab("Density")
   
-  #Calculating sample
-  sample = rgamma(n, alpha, beta)
-  mean = mean(sample)
-  variance = var(sample)
+  #Calculating graph for mom beta estimates
+  momB = ggplot(estimates.data, aes(x = beta.mom)) +
+    geom_density() +
+    geom_hline(yintercept=0) +
+    theme_bw() +
+    xlab("Beta (MOM estimate)") +
+    ylab("Density")
   
-  #Calculating MOM values
-  alpha_mom <- (mean^2) / variance
-  beta_mom <- variance / mean
+  #Graph for mle alpha estimates
+  mleA = ggplot(estimates.data, aes(x = alpha.mle)) +
+    geom_density() +
+    geom_hline(yintercept=0) +
+    theme_bw() +
+    xlab("Alpha (MLE estimate)") +
+    ylab("Density")
   
-  #Calculating MLE values
-
+  #Graph for mle beta estimates
+  mleB = ggplot(estimates.data, aes(x = beta.mle)) +
+    geom_density() +
+    geom_hline(yintercept=0) +
+    theme_bw() +
+    xlab("Beta (MLE estimate)") +
+    ylab("Density")
+  
+  #Making graphs into 2x2 grid using patchwork
+  estimate.density = (momA | momB) / (mleA | mleB)
+  
+  estimates.data |>
+    summarize(
+      bias = mean(alpha.mom)-alpha,
+      precision = 1/var(alpha.mom),
+      mse = var(alpha.mom) + bias^2
+    )
+  (bias <- mean(theta.hats)- theta)
+  (precision <- 1/var(theta.hats))
+  (mse <- var(theta.hats) + bias^2)
+  
+  
   
   
 }
