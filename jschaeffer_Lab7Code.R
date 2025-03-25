@@ -2,6 +2,7 @@ library(tidyverse)
 library(ggplot2)
 library(patchwork)
 library(nleqslv)
+library(e1071)
 
 ######################################################
 #####     TASK ONE: Describing distribution     ######
@@ -184,15 +185,19 @@ sample_func = function(n, alpha, beta){
                        shape2 = beta)    # beta parameter
   return(beta.sample)
 }
-
-####Making density plots
+#############################
+####      MAKING DENSITY PLOTS
+#############################
 #Alpha = 2, Beta = 5
 sample1 = sample_func(500, 2, 5)
 
 density_plot1 = ggplot() + 
   geom_histogram(aes(sample1, y=after_stat(density))) +
   geom_density(aes(sample1)) + 
-  geom_hline(yintercept=0)
+  geom_hline(yintercept=0) +
+  theme_bw() +
+  xlab("Sample 1 Values") +
+  ylab("Density")
 
 
 #Alpha = 5, Beta = 5
@@ -201,7 +206,10 @@ sample2 = sample_func(500, 5, 5)
 density_plot2 = ggplot() + 
   geom_histogram(aes(sample2, y=after_stat(density))) +
   geom_density(aes(sample2)) + 
-  geom_hline(yintercept=0)
+  geom_hline(yintercept=0) +
+  theme_bw() +
+  xlab("Sample 2 Values") +
+  ylab("Density")
 
 
 #Alpha = 5, Beta = 2
@@ -210,7 +218,10 @@ sample3 = sample_func(500,5,2)
 density_plot3 = ggplot() + 
   geom_histogram(aes(sample3, y=after_stat(density))) +
   geom_density(aes(sample3)) +
-  geom_hline(yintercept=0)
+  geom_hline(yintercept=0) +
+  theme_bw() +
+  xlab("Sample 3 Values") +
+  ylab("Density")
 
 
 #Alpha = 0.5, Beta = 0.5
@@ -219,13 +230,53 @@ sample4 = sample_func(500,0.5,0.5)
 density_plot4 = ggplot() + 
   geom_histogram(aes(sample4, y=after_stat(density))) +
   geom_density(aes(sample4)) +
-  geom_hline(yintercept=0)
+  geom_hline(yintercept=0) +
+  theme_bw() +
+  xlab("Sample 4 Values") +
+  ylab("Density")
 
 
-#summary1 %>%
-#  summarize(mean = mean(sample1),
- #           variance = var(sample1),
- #           skewness = )
+sample.df <- tibble(
+  Sample1 = sample1,
+  Sample2 = sample2,
+  Sample3 = sample3,
+  Sample4 = sample4
+)
+
+##########################
+### SUMMARIZING SAMPLE DATA
+##########################
+
+
+sample.summaries = sample.df |>
+ summarize(
+          #calculating for sample 1
+          mean_sample1 = mean(Sample1),
+          variance_sample1 = var(Sample1),
+          skewness_sample1 = skewness(Sample1),
+          kurtosis_sample1 = kurtosis(Sample1),
+          
+          #Calculating for sample 2
+          mean_sample2 = mean(Sample2),
+          variance_sample2 = var(Sample2),
+          skewness_sample2 = skewness(Sample2),
+          kurtosis_sample2 = kurtosis(Sample2),
+          
+          #Calculating for sample 2
+          mean_sample3 = mean(Sample3),
+          variance_sample3 = var(Sample3),
+          skewness_sample3 = skewness(Sample3),
+          kurtosis_sample3 = kurtosis(Sample3),
+          
+          #Calculating for sample 4
+          mean_sample4 = mean(Sample4),
+          variance_sample4 = var(Sample4),
+          skewness_sample4 = skewness(Sample4),
+          kurtosis_sample4 = kurtosis(Sample4),
+          )|>
+  #Reorganizing table
+  pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_")
+
 
 
 ##############################################
@@ -348,6 +399,8 @@ for (i in 1:1000){
   estimates.data[i,4] = mles$par[1]
   estimates.data[i,5] = mles$par[2]
   
+}
+
   #Plotting values in a geom_density 2x2
   #Calculating Graph for the mom alpha estimates
   momA = ggplot(estimates.data, aes(x = alpha.mom)) +
@@ -384,20 +437,40 @@ for (i in 1:1000){
   #Making graphs into 2x2 grid using patchwork
   estimate.density = (momA | momB) / (mleA | mleB)
   
-  estimates.data |>
+  summary.table = estimates.data |>
     summarize(
-      bias = mean(alpha.mom)-alpha,
-      precision = 1/var(alpha.mom),
-      mse = var(alpha.mom) + bias^2
-    )
-  (bias <- mean(theta.hats)- theta)
-  (precision <- 1/var(theta.hats))
-  (mse <- var(theta.hats) + bias^2)
+      #Summary for mom alpha estimates
+      momA_bias = mean(alpha.mom)-alpha,
+      momA_precision = 1/var(alpha.mom),
+      momA_mse = var(alpha.mom) + momA_bias^2,
+      
+      #Summary for mom beta estimates
+      momB_bias = mean(beta.mom)-beta,
+      momB_precision = 1/var(beta.mom),
+      momB_mse = var(beta.mom) + momB_bias^2,
+      
+      #Summary for mle alpha estimates
+      mleA_bias = mean(alpha.mle)-alpha,
+      mleA_precision = 1/var(alpha.mle),
+      mleA_mse = var(alpha.mle) + mleA_bias^2,
+      
+      #Summary for mle beta estimates
+      mleB_bias = mean(beta.mle)-beta,
+      mleB_precision = 1/var(beta.mle),
+      mleB_mse = var(beta.mle) + mleB_bias^2
+    ) |>
+    #Reorganizing table
+    pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_") |>
+    rename("Bias" = bias, "Precision" = precision, "MSE" = mse) |>
+    mutate(Variable = recode(Variable,
+                            "momA" = "MOM Alpha Estimate","momB" = "MOM Beta Estimate",
+                            "mleA" = "MLE Alpha Estimate","mleB" = "MLE Beta Estimate"
+                             ))
   
+
   
+  view(summary.table)
   
-  
-}
 
 
 
