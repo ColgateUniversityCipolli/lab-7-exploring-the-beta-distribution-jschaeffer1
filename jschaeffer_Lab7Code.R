@@ -20,7 +20,7 @@ mean.calc = function(alpha, beta){
 
 #Calculating Variance
 variance.calc = function(alpha, beta){
-  sd = sqrt((alpha*beta)/((alpha+beta)^2*(alpha+beta+1)))
+  sd = (alpha*beta)/((alpha+beta)^2*(alpha+beta+1))
   return(sd)
 }
 
@@ -94,7 +94,6 @@ kurt4 = kurt.calc(0.5,0.5)
 
 plot1 = ggplot(data= distrib.tibble1)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(2,5)")) +                 # plot beta dist
-  geom_line(aes(x=x, y=norm.pdf, color="Gaussian(0.2857, 0.0255)")) +  # plot guassian dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
   xlab("x")+                                                           # label x axis
@@ -104,7 +103,6 @@ plot1 = ggplot(data= distrib.tibble1)+                                          
 
 plot2 = ggplot(data= distrib.tibble2)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(5,5)")) +                 # plot beta dist
-  geom_line(aes(x=x, y=norm.pdf, color="Gaussian(0.2857, 0.0255)")) +  # plot guassian dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
   xlab("x")+                                                           # label x axis
@@ -114,7 +112,6 @@ plot2 = ggplot(data= distrib.tibble2)+                                          
 
 plot3 = ggplot(data= distrib.tibble3)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(5,2)")) +                 # plot beta dist
-  geom_line(aes(x=x, y=norm.pdf, color="Gaussian(0.2857, 0.0255)")) +  # plot guassian dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
   xlab("x")+                                                           # label x axis
@@ -124,7 +121,6 @@ plot3 = ggplot(data= distrib.tibble3)+                                          
 
 plot4 = ggplot(data= distrib.tibble4)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(0.5,0.5)")) +                 # plot beta dist
-  geom_line(aes(x=x, y=norm.pdf, color="Gaussian(0.2857, 0.0255)")) +  # plot guassian dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
   xlab("x")+                                                           # label x axis
@@ -140,12 +136,12 @@ distribution.table = tibble(
   Values = c("Alpha = 2, Beta = 5", "Alpha = 5, Beta = 5",
              "Alpha = 5, Beta = 2", "Alpha = 0.5, Beta = 0.5"),
   Mean = c(mean1, mean2, mean3, mean4),
-  SD = c(sd1, sd2, sd3, sd4),
+  Variance = c(sd1, sd2, sd3, sd4),
   Skew = c(skew1, skew2, skew3, skew4),
   Kurtosis = c(kurt1, kurt2, kurt3, kurt4)
 )
 
-
+#view(distribution.table)
 
 
 
@@ -178,7 +174,7 @@ mean1
 
 #Testing Variance
 beta.moment(2,5,2,T)
-sd1^2
+sd1
 
 #Testing Skew
 beta.moment(2,5,3,T)$value/(beta.moment(2,5,2,T)$value^(3/2))
@@ -306,7 +302,7 @@ sample.summaries = sample.df |>
     )
   )
 
-view(sample.summaries)
+#view(sample.summaries)
 
 
 
@@ -409,7 +405,7 @@ for(i in 1:1000){
   mean = mean(sample)
   variance = var(sample)
   skewness = skewness(sample)
-  kurtosis = kurtosis(sample)
+  kurtosis = kurtosis(sample)-3
   
   #Adding values to dataframe
   new_row = tibble(mean = mean, variance = variance, skewness =skewness, kurtosis = kurtosis)
@@ -421,22 +417,22 @@ statistic_summary = statistic_df |>
     mean_mean = mean(mean),
     mean_variance = var(mean),
     mean_skewness = skewness(mean),
-    mean_kurtosis = kurtosis(mean),
+    mean_kurtosis = kurtosis(mean)-3,
     
     variance_mean = mean(variance),
     variance_variance = var(variance),
     variance_skewness = skewness(variance),
-    variance_kurtosis = kurtosis(variance),
+    variance_kurtosis = kurtosis(variance)-3,
     
     skewness_mean = mean(skewness),
     skewness_variance = var(skewness),
     skewness_skewness = skewness(skewness),
-    skewness_kurtosis = kurtosis(skewness),
+    skewness_kurtosis = kurtosis(skewness)-3,
     
     kurtosis_mean = mean(kurtosis),
     kurtosis_variance = var(kurtosis),
     kurtosis_skewness = skewness(kurtosis),
-    kurtosis_kurtosis = kurtosis(kurtosis)
+    kurtosis_kurtosis = kurtosis(kurtosis)-3
   )|>
   #Reorganizing table
   pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_")
@@ -555,9 +551,6 @@ mlemom.plot = ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plot
 
 
 
-
-
-
 ############################################
 ######            TASK 8              ######
 ############################################
@@ -665,7 +658,7 @@ for (i in 1:1000){
   
 
   
-  view(summary.table)
+  #view(summary.table)
   
 
 
