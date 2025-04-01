@@ -128,6 +128,8 @@ plot4 = ggplot(data= distrib.tibble4)+                                          
   scale_color_manual("", values = c("black", "grey"))+                 # change colors
   theme(legend.position = "bottom")                                    # move legend to bottom
 
+part1_plot = (plot1 | plot2) / (plot3 | plot4)
+
 ########################
 ## MAKING TABLE OF VALUES
 ########################

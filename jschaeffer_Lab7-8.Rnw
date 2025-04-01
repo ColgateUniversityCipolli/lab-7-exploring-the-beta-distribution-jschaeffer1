@@ -24,38 +24,57 @@
 \begin{document}
 
 \vspace{-1in}
-\title{Lab XX -- MATH 240 -- Computational Statistics}
+\title{Lab 7 and 8 -- MATH 240 -- Computational Statistics}
 
 \author{
-  First Author \\
-  Affiliation  \\
-  Department  \\
-  {\tt email@domain}
+  Jack Schaeffer \\
+  Math 240  \\
+  Professor Cipolli  \\
+  {\tt jschaeffer@colgate.edu}
 }
 
-\date{}
+\date{April 1, 2025}
 
 \maketitle
 
 \begin{multicols}{2}
 \begin{abstract}
-This document provides a basic template for the 2-page labs we will complete each week. Here, briefly summarize what you did and why it might be helpful. Provide all the top-line conclusions, but avoid providing \emph{all} the details. Results should be limited to ``we show X, Y, and Z."
+This lab is an overview of the beta distribution including potential uses and examples. Further examination of the distribution includes analysis of statistic summaries, the effect of sample size, and point estimator methods.
 \end{abstract}
 
-\noindent \textbf{Keywords:} What topics does the lab cover concerning class? List 3-4 key terms here, separated by semicolons.
+\noindent \textbf{Keywords:} Beta distribution; point estimators; moments of distribution
 
 \section{Introduction}
-Provide an overarching summary of what you're talking about. In this section, you introduce the idea to the reader, and your goal is to pull them in. What's the mystery you aim to solve?
 
-You want to provide enough background to understand the context of the work. Specifically, what is the question you are addressing? If it applies, describe what information currently exists about this problem, including citations, and explain how the question you're answering complements this work.
+This assignment is focused on analysis of the beta distribution to gain insight into its uses and properties. The beta distribution is a continuous distribution that models a variable X that has values within [0,1]. The shape and properties of the beta distribution are reliant on the parameters $\alpha$ and $\beta$ ($\alpha>0$, $\beta>0$). The goal during the lab was to gain a better understanding of the beta distribution and its potential use in real world context. This included determining how altering sample sizes and parameters affects the beta distribution and comparing the efficacy of different point estimators in calculating $\alpha$ and $\beta$ values.
 
-Provide a roadmap of the structure of the paper. 
+My initial work was focused on examining the effect that $\alpha$ and $\beta$ have on the distribution before moving into analysis of statistical properties and point estimators. This preparation included testing sample size's importance in producing accurate data, which was helpful for using a beta distribution to model the death rates collected from the World Bank (cite).
 
-\subsection{Intro Subsection}
-You might need/want to discuss the topics in subsections. Or, you may have multiple questions.
+\section{Density Functions and Parameters}
+
+<<setup, echo=FALSE>>=
+source("jschaeffer_Lab7Code.R") 
+@
+
+Due to the beta distribution's separate shape parameters $\alpha$ and $\beta$, the distribution can have very different appearances and statistical properties depending on parameter values.
+
+<<fig_part1, echo=FALSE, fig=TRUE, width=4, height=4>>=
+print(part1_plot)
+@
+
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics{fig_part1}
+ \caption{Density plots of the beta distribution with differing parameter values}
+ \label{plot1}
+ \end{center}
+ \end{figure}
 
 
-\section{Methods}
+
+
+
+
 Describe the data you are working with, if applicable. Describe the specific process you will follow to answer the question at hand. This does not mean you should write something like this.
 \begin{quote}
 \textit{I did this and then I did that and then I did this other thing and then..., and then..., and then...}
