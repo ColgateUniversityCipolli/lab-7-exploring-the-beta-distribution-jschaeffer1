@@ -52,38 +52,68 @@ My initial work was focused on examining the effect that $\alpha$ and $\beta$ ha
 
 \section{Density Functions and Parameters}
 
-<<setup, echo=FALSE>>=
-source("jschaeffer_Lab7Code.R") 
-@
+
 
 Due to the beta distribution's separate shape parameters $\alpha$ and $\beta$, the distribution can have very different appearances and statistical properties depending on parameter values.
 
-<<fig_part1, echo=FALSE, fig=TRUE, width=4, height=4>>=
-print(part1_plot)
-@
 
 \begin{figure}[H]
  \begin{center}
- \includegraphics{fig_part1}
+ \includegraphics[scale=0.8]{parameter_comparison.pdf}
  \caption{Density plots of the beta distribution with differing parameter values}
- \label{plot1}
+ \label{fig1}
  \end{center}
  \end{figure}
 
 
+<<load_distribution_table, echo=FALSE, results=FALSE, message=FALSE, warning=FALSE>>=
+source("jschaeffer_Lab7Code.R")
+@
+
+<<size='scriptsize', echo=FALSE, results=FALSE, message = FALSE, warning = FALSE>>=
+library(xtable)
+distrib.table <- xtable(distribution_table, label="distrib.tab", caption="Properties in comparison to differing parameter values")
+@
+
+<<echo=FALSE, results="asis">>=
+print(distrib.table,
+      table.placement="H", include.rownames=FALSE, size="small")
+@
+
+Figure \ref{fig1} showcases the noticeable difference in the shape of the beta distribution depending on parameter values. These differences are reflected in the plots' properties in Table \ref{distrib.tab}. 
 
 
+\section{Properties}
+As is clearly shown from Figure \ref{fig1} and Table \ref{distrib.tab}, both the beta distribution's shape and characteristics are dependent on $\alpha$ and $\beta$. The population-level characteristics can be calculated by
 
+\begin{align*}
+E(X) &= \frac{\alpha}{\alpha + \beta} \tag{The Mean} \\
+var(X) &= \frac{\alpha\beta}{(\alpha + \beta)^2(\alpha + \beta + 1)} \tag{The variance} \\
+skew(X) &= \frac{2(\beta-\alpha)\sqrt{\alpha + \beta + 1}}{(\alpha + \beta + 2)\sqrt{\alpha\beta}} \tag{The Skewness} \\
+kurt(X) &= \frac{6[(\alpha-\beta)^2(\alpha+\beta+1)-\alpha\beta(\alpha+\beta+2)]}{\alpha\beta(\alpha+\beta+2)(\alpha+\beta+3)} \tag{The Excess Kurtosis}
+\end{align*}
 
-Describe the data you are working with, if applicable. Describe the specific process you will follow to answer the question at hand. This does not mean you should write something like this.
-\begin{quote}
-\textit{I did this and then I did that and then I did this other thing and then..., and then..., and then...}
-\end{quote}
-Instead, it should provide a clear and concise narrative that flows from the problem specification in the Introduction to how you will approach answering it. This is where I would expect to see some citations for \texttt{R} packages you will use to conduct the statistical analysis reported in the Results section.
+The above equations are reflective of the answers seen in Table \r(ef{distrib.tab}. For example, when $\alpha$ and $\beta$ are equal, the skewness is always equal to zero.
 
+\section{Estimators}
+When the exact parameters of a beta distribution are unknown, which is essentially always the case in real world examples, moments of distribution can use sample data to estimate the distribution's characteristics. The $k$th uncentered moment of distribution is 
 
-\subsection{Methods Subsection}
-Much like the Introduction, subsections can be helpful for the Methods section. For example, you might describe data collection and the statistical analyses of the collected data in different subsections. Or, you may have different questions that require distinct methods. 
+\[E(X^k) = \int_\chi x^kf_X(x)dx,\]
+
+while the $k$th centered moment of distribution is
+
+\[E[(X-\mu_X)^k] = \int_\chi (x-\mu_X)^kf_X(x)dx.\]
+
+Using these moments, we can calculate the population-level characteristics as
+
+\begin{align*}
+\mu_X = E(X) & \tag{The Mean} \\ 
+\sigma^2_X = var(X) &= E[(X-\mu_X)^2] \tag{The Variance} \\
+skew(X) &= \frac{E[(X-\mu_X)^3]}{E[(X-\mu_X)^2]^{3/2}} \tag{The Skewness} \\
+kurt(X) &= \frac{E[(X-\mu_X)^4]}{E[(X-\mu_X)^2]^2}-3 \tag{The Excess Kurtosis}
+\end{align*}
+
+\section{Example: Death Rates Data}
 
 \section{Results}
 Tie together the Introduction -- where you introduce the problem at hand -- and the methods --  what you propose to do to answer the question. Present your data, the results of your analyses, and how each reported aspect contributes to answering the question. This section should include table(s), statistic(s), and graphical displays. Make sure to put the results in a sensible order and that each result contributes a logical and developed solution. It should not just be a list. Avoid being repetitive. 

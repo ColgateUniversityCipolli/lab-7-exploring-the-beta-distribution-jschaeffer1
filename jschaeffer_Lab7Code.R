@@ -129,12 +129,12 @@ plot4 = ggplot(data= distrib.tibble4)+                                          
   theme(legend.position = "bottom")                                    # move legend to bottom
 
 part1_plot = (plot1 | plot2) / (plot3 | plot4)
-
+ggsave("parameter_comparison.pdf", plot = part1_plot, width = 4, height = 4)
 ########################
 ## MAKING TABLE OF VALUES
 ########################
 
-distribution.table = tibble(
+distribution_table = tibble(
   Values = c("Alpha = 2, Beta = 5", "Alpha = 5, Beta = 5",
              "Alpha = 5, Beta = 2", "Alpha = 0.5, Beta = 0.5"),
   Mean = c(mean1, mean2, mean3, mean4),
@@ -171,20 +171,20 @@ beta.moment = function(alpha, beta, k, centered) {
 
 ###Testing function
 #Testing Mean
-beta.moment(2,5,1,F)
-mean1
+#beta.moment(2,5,1,F)
+#mean1
 
 #Testing Variance
-beta.moment(2,5,2,T)
-sd1
+#beta.moment(2,5,2,T)
+#sd1
 
 #Testing Skew
-beta.moment(2,5,3,T)$value/(beta.moment(2,5,2,T)$value^(3/2))
-skew1
+#beta.moment(2,5,3,T)$value/(beta.moment(2,5,2,T)$value^(3/2))
+#skew1
 
 #Testing Kurtosis
-(beta.moment(2,5,4,T)$value/(beta.moment(2,5,2,T)$value)^2)-3
-kurt1
+#(beta.moment(2,5,4,T)$value/(beta.moment(2,5,2,T)$value)^2)-3
+#kurt1
 
 
 
