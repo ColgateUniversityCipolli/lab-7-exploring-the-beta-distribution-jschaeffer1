@@ -60,7 +60,7 @@ source("jschaeffer_Lab7Code.R")
 
 <<size='scriptsize', echo=FALSE, results=FALSE, message = FALSE, warning = FALSE>>=
 library(xtable)
-distrib.table <- xtable(distribution_table, label="distrib.tab", caption="Properties in comparison to differing parameter values")
+distrib.table <- xtable(distribution_table, label="distrib.tab", caption="Property values of the beta distribution")
 @
 
 <<echo=FALSE, results="asis">>=
@@ -72,7 +72,7 @@ print(distrib.table,
 \begin{figure}[H]
  \begin{center}
  \includegraphics[scale=0.75]{parameter_comparison.pdf}
- \caption{Density plots of the beta distribution with differing parameter values}
+ \caption{Density plots of the beta distribution}
  \label{fig1}
  \end{center}
  \end{figure}
