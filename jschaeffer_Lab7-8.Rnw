@@ -80,11 +80,11 @@ print(distrib.table,
 
 
 
-Figure \ref{fig1} showcases the noticeable difference in the shape of the beta distribution depending on parameter values, made through the help of \texttt{tidyverse} and \texttt{patchwork} \citep{tidyverse, patchwork}. These differences are reflected in the plots' properties in Table \ref{distrib.tab}. 
+Figure \ref{fig1} showcases the noticeable difference in the shape of the beta distribution depending on parameter values, made through the help of \texttt{tidyverse} and \texttt{patchwork} \citep{tidyverse, patchwork}. These differences are reflected in the plots' very differing values in Table \ref{distrib.tab}. 
 
 
 \section{Properties}
-As is clearly shown from Figure \ref{fig1} and Table \ref{distrib.tab}, both the beta distribution's shape and characteristics are dependent on $\alpha$ and $\beta$. The population-level characteristics can be calculated by
+As seen in Figure \ref{fig1} and Table \ref{distrib.tab}, both the beta distribution's shape and characteristics are dependent on $\alpha$ and $\beta$. The population-level characteristics can be calculated by
 
 \begin{align*}
 E(X) &= \frac{\alpha}{\alpha + \beta} \tag{The Mean} \\
@@ -155,7 +155,7 @@ Both Figure \ref{fig2} and Table \ref{estim.tab} demonstrate the effectiveness o
  \end{center}
  \end{figure}
 
-In Figure \ref{fig3}, the values are extremely inconsistent for low sample values, but they aligned closer with the population level value (depicted with a horizontal line) as sample size increases. At this high sample size, we can see that property values stay similar through differing data samples through Figure \ref{fig4}. Interestingly, each distribution of Figure \ref{fig4} appears similar to the normal distribution.
+In Figure \ref{fig3}, the values are extremely inconsistent for low sample sizes, but they align closer with the population level value (depicted with a horizontal line) as sample size increases. At this high sample size, we can see that property values stay similar regardless of different data samples as seen in Figure \ref{fig4}. Interestingly, each distribution of Figure \ref{fig4} appears similar to the normal distribution.
 
 
 \section{Example: Death Rates Data}
@@ -169,7 +169,7 @@ To demonstrate the beta distribution's use in real life, I used data from the Wo
  \end{center}
  \end{figure}
  
-Both estimates appear to be a fairly accurate representation of the data, but I then compared the MOM vs MLE estimates to determine which is more accurate with a given $\alpha=8$ and $\beta=950$ and sample sizes $n=266$. The differing methods look near identical in Figre \ref{fig6}, but Table \ref{mommle.tab} reveals that the MLE calculations have lower error for both $\alpha$ and $\beta$. This indicates that MLE is a more effective method for calculating parameters of the beta distribution.
+Both estimates appear to be a fairly accurate representation of the data, but I then compared the MOM vs MLE estimates to determine which is more accurate with a given $\alpha=8$ and $\beta=950$ and sample sizes $n=266$. The differing methods look near identical in Figure \ref{fig6}, but Table \ref{mommle.tab} reveals that the MLE calculations have lower error for both $\alpha$ and $\beta$. This indicates that MLE is a more effective method for calculating parameters of the beta distribution.
  
  \begin{figure}[H]
  \begin{center}
