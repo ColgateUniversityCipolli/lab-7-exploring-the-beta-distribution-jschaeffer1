@@ -110,7 +110,7 @@ Due to the beta distribution's separate shape parameters $\alpha$ and $\beta$, t
 
 
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Tue Apr  1 12:13:33 2025
+% Tue Apr  1 12:41:53 2025
 \begin{table}[H]
 \centering
 \begingroup\small
@@ -190,7 +190,7 @@ To test the accuracy of data sampling compared to population-level values, we ca
 
 
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Tue Apr  1 12:13:53 2025
+% Tue Apr  1 12:42:15 2025
 \begin{table}[H]
 \centering
 \begingroup\small
@@ -228,13 +228,53 @@ Both Figure \ref{fig2} and Table \ref{estim.tab} demonstrate the effectiveness o
  \end{center}
  \end{figure}
 
-In Figure \ref{fig3}, the values are extremely inconsistent for low sample values, which changed considerably on each calculation. As sample size increases, however, the values converge towards the population-level value indicated by the horizontal black line, demonstrating that having a large enough sample size is important for producing reliable data. At this high sample size, we can see that property values stay similar through differing data samples.
-
-
+In Figure \ref{fig3}, the values are extremely inconsistent for low sample values, but they aligned closer with the population level value (depicted with a horizontal line) as sample size increases. At this high sample size, we can see that property values stay similar through differing data samples through Figure \ref{fig4}. Interestingly, each distribution of Figure \ref{fig4} appears similar to the normal distribution.
 
 
 \section{Example: Death Rates Data}
 To demonstrate the beta distribution's use in real life, I used data from the World Bank on death rates in 2022. 
+
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.7]{estimator_comparison.pdf}
+ \caption{Comparison of MLE vs MOM}
+ \label{fig5}
+ \end{center}
+ \end{figure}
+ 
+ 
+ \begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.7]{estimate_density.pdf}
+ \caption{Density plot of MOM and MLE estimates}
+ \label{fig6}
+ \end{center}
+ \end{figure}
+
+
+
+
+
+% latex table generated in R 4.4.2 by xtable 1.8-4 package
+% Tue Apr  1 12:42:36 2025
+\begin{table}[H]
+\centering
+\begingroup\small
+\begin{tabular}{lrrr}
+  \hline
+Variable & Bias & Precision & MSE \\ 
+  \hline
+MOM Alpha Estimate & 0.08 & 1.83 & 0.55 \\ 
+  MOM Beta Estimate & 10.41 & 0.00 & 8281.58 \\ 
+  MLE Alpha Estimate & 0.08 & 2.13 & 0.47 \\ 
+  MLE Beta Estimate & 9.74 & 0.00 & 7121.52 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Comparison of MOM and MLE estimators} 
+\label{mommle.tab}
+\end{table}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography

@@ -468,7 +468,10 @@ kurt.plot.task5 = ggplot(statistic_df, aes(x = kurtosis, y=after_stat(density)))
   geom_hline(yintercept=0)+ #Making y intercept line
   theme_bw()
 
+sampling.distrib = (mean.plot.task5 | var.plot.task5) / (skew.plot.task5 | kurt.plot.task5)
 
+
+ggsave("sampling_distrib.pdf", plot = sampling.distrib, width = 4, height = 4)
 
 ##############################################
 ####              TASK 6                  ####
@@ -542,7 +545,7 @@ ggdat.beta <- tibble(x=seq(0,0.025, length.out=1000))|>
 
 
 ###Plotting the graph
-mlemom.plot = ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample data
+mlemom_plot = ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plotting sample data
   geom_histogram(bins = 30) + #Histogram plot
   geom_hline(yintercept=0)+ #Making y intercept line
   theme_bw() +
@@ -550,9 +553,10 @@ mlemom.plot = ggplot(death.data, aes(x = `2022`, y=after_stat(density))) + #Plot
             aes(x=x, y=mom.pdf, color="MOM")) + #Calculating MOM line
   geom_line(data=ggdat.beta,
             aes(x=x, y=mle.pdf, color="MLE")) + #Calculating MLE line
-  ylab("Deaths per Person in 2022") +
-  xlab("Density")
+  xlab("Deaths per Person in 2022") +
+  ylab("Density")
 
+ggsave("estimator_comparison.pdf", plot = mlemom_plot, width = 6, height = 4)
 
 
 ############################################
@@ -628,9 +632,11 @@ for (i in 1:1000){
     ylab("Density")
   
   #Making graphs into 2x2 grid using patchwork
-  estimate.density = (momA | momB) / (mleA | mleB)
+  estimate_density = (momA | momB) / (mleA | mleB)
+  ggsave("estimate_density.pdf", plot = estimate_density, width = 4, height = 4)
   
-  summary.table = estimates.data |>
+  
+  summary_table = estimates.data |>
     summarize(
       #Summary for mom alpha estimates
       momA_bias = mean(alpha.mom)-alpha,
@@ -662,7 +668,7 @@ for (i in 1:1000){
   
 
   
-  #view(summary.table)
+  #view(summary_table)
   
 
 

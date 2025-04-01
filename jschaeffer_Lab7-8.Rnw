@@ -161,6 +161,37 @@ In Figure \ref{fig3}, the values are extremely inconsistent for low sample value
 \section{Example: Death Rates Data}
 To demonstrate the beta distribution's use in real life, I used data from the World Bank on death rates in 2022. 
 
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.7]{estimator_comparison.pdf}
+ \caption{Comparison of MLE vs MOM}
+ \label{fig5}
+ \end{center}
+ \end{figure}
+ 
+ 
+ \begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.45]{estimate_density.pdf}
+ \caption{Density plot of MOM and MLE estimates}
+ \label{fig6}
+ \end{center}
+ \end{figure}
+
+<<load_summary_table, echo=FALSE, results=FALSE, message=FALSE, warning=FALSE>>=
+source("jschaeffer_Lab7Code.R")
+@
+
+<<size='scriptsize', echo=FALSE, results=FALSE, message = FALSE, warning = FALSE>>=
+library(xtable)
+estimator.sum <- xtable(summary_table, label="mommle.tab", caption="Comparison of MOM and MLE estimators")
+@
+
+<<echo=FALSE, results="asis">>=
+print(estimator.sum,
+      table.placement="H", include.rownames=FALSE, size="small")
+@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,10 +208,4 @@ you cite them in your document, the bibliography section will automatically popu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\onecolumn
-\section{Appendix}
-
-If you have anything extra, you can add it here in the appendix. This can include images or tables that don't work well in the two-page setup, code snippets you might want to share, etc.
-
 \end{document}
