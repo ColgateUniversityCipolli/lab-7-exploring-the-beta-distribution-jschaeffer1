@@ -214,7 +214,7 @@ density_plot1 = ggplot() +
   geom_density(aes(sample1)) + 
   geom_hline(yintercept=0) +
   theme_bw() +
-  xlab("Sample 1 Values") +
+  xlab("Alpha=2, Beta=5") +
   ylab("Density")
 
 
@@ -226,7 +226,7 @@ density_plot2 = ggplot() +
   geom_density(aes(sample2)) + 
   geom_hline(yintercept=0) +
   theme_bw() +
-  xlab("Sample 2 Values") +
+  xlab("Alpha=5, Beta=5") +
   ylab("Density")
 
 
@@ -238,7 +238,7 @@ density_plot3 = ggplot() +
   geom_density(aes(sample3)) +
   geom_hline(yintercept=0) +
   theme_bw() +
-  xlab("Sample 3 Values") +
+  xlab("Alpha=5, Beta=2") +
   ylab("Density")
 
 
@@ -250,9 +250,11 @@ density_plot4 = ggplot() +
   geom_density(aes(sample4)) +
   geom_hline(yintercept=0) +
   theme_bw() +
-  xlab("Sample 4 Values") +
+  xlab("Alpha=0.5, Beta=0.5") +
   ylab("Density")
 
+density_plot = (density_plot1 | density_plot2) / (density_plot3 | density_plot4)
+ggsave("density_histogram.pdf", plot = density_plot, width = 4, height = 4)
 
 sample.df <- tibble(
   Sample1 = sample1,
@@ -266,7 +268,7 @@ sample.df <- tibble(
 ##########################
 
 
-sample.summaries = sample.df |>
+sample_summaries = sample.df |>
  summarize(
           #calculating for sample 1
           sample1_mean = mean(Sample1),
@@ -304,7 +306,7 @@ sample.summaries = sample.df |>
     )
   )
 
-#view(sample.summaries)
+#view(sample_summaries)
 
 
 

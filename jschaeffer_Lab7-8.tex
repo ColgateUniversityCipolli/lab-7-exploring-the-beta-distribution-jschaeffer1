@@ -122,7 +122,7 @@ Due to the beta distribution's separate shape parameters $\alpha$ and $\beta$, t
 
 
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Tue Apr  1 01:28:14 2025
+% Tue Apr  1 02:12:21 2025
 \begin{table}[H]
 \centering
 \begingroup\small
@@ -158,7 +158,7 @@ kurt(X) &= \frac{6[(\alpha-\beta)^2(\alpha+\beta+1)-\alpha\beta(\alpha+\beta+2)]
 The above equations are reflective of the answers seen in Table \r(ef{distrib.tab}. For example, when $\alpha$ and $\beta$ are equal, the skewness is always equal to zero.
 
 \section{Estimators}
-When the exact parameters of a beta distribution are unknown, which is essentially always the case in real world examples, moments of distribution can use sample data to estimate the distribution's characteristics. The $k$th uncentered moment of distribution is 
+When the exact parameters of a beta distribution are unknown, we have to instead rely on data samples to estimate the distribution. To estimate population-level characteristics, we can use moments of distribution. The $k$th uncentered moment of distribution is 
 
 \[E(X^k) = \int_\chi x^kf_X(x)dx,\]
 
@@ -175,19 +175,44 @@ skew(X) &= \frac{E[(X-\mu_X)^3]}{E[(X-\mu_X)^2]^{3/2}} \tag{The Skewness} \\
 kurt(X) &= \frac{E[(X-\mu_X)^4]}{E[(X-\mu_X)^2]^2}-3 \tag{The Excess Kurtosis}
 \end{align*}
 
+To test the accuracy of data sampling compared to population-level values, we can overlay the population-level density plot over a histogram of the collected data.
+
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.8]{density_histogram.pdf}
+ \caption{Comparison of estimator versus population-level values}
+ \label{fig2}
+ \end{center}
+ \end{figure}
+
+
+
+
+
+% latex table generated in R 4.4.2 by xtable 1.8-4 package
+% Tue Apr  1 02:12:32 2025
+\begin{table}[H]
+\centering
+\begingroup\small
+\begin{tabular}{lrrrr}
+  \hline
+Variable & mean & variance & skewness & kurtosis \\ 
+  \hline
+Alpha = 2, Beta = 5 & 0.29 & 0.03 & 0.57 & 2.78 \\ 
+  Alpha = 5, Beta = 5 & 0.50 & 0.02 & 0.06 & 2.54 \\ 
+  Alpha = 5, Beta = 2 & 0.71 & 0.03 & -0.74 & 3.22 \\ 
+  Alpha = 0.5, Beta = 0.5 & 0.52 & 0.12 & -0.11 & 1.55 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Estimated characteristics of the beta distribution for specified parameters} 
+\label{estim.tab}
+\end{table}
+
+
+
 \section{Example: Death Rates Data}
-
-\section{Results}
-Tie together the Introduction -- where you introduce the problem at hand -- and the methods --  what you propose to do to answer the question. Present your data, the results of your analyses, and how each reported aspect contributes to answering the question. This section should include table(s), statistic(s), and graphical displays. Make sure to put the results in a sensible order and that each result contributes a logical and developed solution. It should not just be a list. Avoid being repetitive. 
-
-\subsection{Results Subsection}
-Subsections can be helpful for the Results section, too. This can be particularly helpful if you have different questions to answer. 
-
-
-\section{Discussion}
- You should objectively evaluate the evidence you found in the data. Do not embellish or wish-terpet (my made-up phase for making an interpretation you, or the researcher, wants to be true without the data \emph{actually} supporting it). Connect your findings to the existing information you provided in the Introduction.
-
-Finally, provide some concluding remarks that tie together the entire paper. Think of the last part of the results as abstract-like. Tell the reader what they just consumed -- what's the takeaway message?
+To demonstrate the beta distribution's use in real life, I used data from the World Bank on death rates in 2022. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography
