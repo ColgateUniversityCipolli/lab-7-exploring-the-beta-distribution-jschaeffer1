@@ -97,32 +97,20 @@ This lab is an overview of the beta distribution including potential uses and ex
 
 \section{Introduction}
 
-This assignment is focused on analysis of the beta distribution to gain insight into its uses and properties. The beta distribution is a continuous distribution that models a variable X that has values within [0,1]. The shape and properties of the beta distribution are reliant on the parameters $\alpha$ and $\beta$ ($\alpha>0$, $\beta>0$). The goal during the lab was to gain a better understanding of the beta distribution and its potential use in real world context. This included determining how altering sample sizes and parameters affects the beta distribution and comparing the efficacy of different point estimators in calculating $\alpha$ and $\beta$ values.
+The beta distribution is a continuous distribution that models a variable X that has values within [0,1]. The shape and properties of the beta distribution are reliant on the parameters $\alpha$ and $\beta$ ($\alpha>0$, $\beta>0$).
 
-My initial work was focused on examining the effect that $\alpha$ and $\beta$ have on the distribution before moving into analysis of statistical properties and point estimators. This preparation included testing sample size's importance in producing accurate data, which was helpful for using a beta distribution to model the death rates collected from the World Bank (cite).
+My initial work was focused on the effect that $\alpha$ and $\beta$ have on the distribution before moving into analysis of statistical properties and point estimators. This work included testing sample size's importance in producing accurate data and application of the beta distribution to model death rates in 2022.
 
 \section{Density Functions and Parameters}
 
-
-
 Due to the beta distribution's separate shape parameters $\alpha$ and $\beta$, the distribution can have very different appearances and statistical properties depending on parameter values.
-
-
-\begin{figure}[H]
- \begin{center}
- \includegraphics[scale=0.8]{parameter_comparison.pdf}
- \caption{Density plots of the beta distribution with differing parameter values}
- \label{fig1}
- \end{center}
- \end{figure}
-
 
 
 
 
 
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Tue Apr  1 02:12:21 2025
+% Tue Apr  1 12:13:33 2025
 \begin{table}[H]
 \centering
 \begingroup\small
@@ -142,6 +130,18 @@ Alpha = 2, Beta = 5 & 0.29 & 0.03 & 0.60 & -0.12 \\
 \end{table}
 
 
+
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.75]{parameter_comparison.pdf}
+ \caption{Density plots of the beta distribution with differing parameter values}
+ \label{fig1}
+ \end{center}
+ \end{figure}
+
+
+
+
 Figure \ref{fig1} showcases the noticeable difference in the shape of the beta distribution depending on parameter values. These differences are reflected in the plots' properties in Table \ref{distrib.tab}. 
 
 
@@ -155,7 +155,7 @@ skew(X) &= \frac{2(\beta-\alpha)\sqrt{\alpha + \beta + 1}}{(\alpha + \beta + 2)\
 kurt(X) &= \frac{6[(\alpha-\beta)^2(\alpha+\beta+1)-\alpha\beta(\alpha+\beta+2)]}{\alpha\beta(\alpha+\beta+2)(\alpha+\beta+3)} \tag{The Excess Kurtosis}
 \end{align*}
 
-The above equations are reflective of the answers seen in Table \r(ef{distrib.tab}. For example, when $\alpha$ and $\beta$ are equal, the skewness is always equal to zero.
+The above equations are reflective of the answers seen in Table \ref{distrib.tab}. For example, when $\alpha$ and $\beta$ are equal, the skewness is always equal to zero.
 
 \section{Estimators}
 When the exact parameters of a beta distribution are unknown, we have to instead rely on data samples to estimate the distribution. To estimate population-level characteristics, we can use moments of distribution. The $k$th uncentered moment of distribution is 
@@ -175,11 +175,11 @@ skew(X) &= \frac{E[(X-\mu_X)^3]}{E[(X-\mu_X)^2]^{3/2}} \tag{The Skewness} \\
 kurt(X) &= \frac{E[(X-\mu_X)^4]}{E[(X-\mu_X)^2]^2}-3 \tag{The Excess Kurtosis}
 \end{align*}
 
-To test the accuracy of data sampling compared to population-level values, we can overlay the population-level density plot over a histogram of the collected data.
+To test the accuracy of data sampling compared to population-level values, we can overlay the population-level density plot over a histogram of sampled data ($n=500$).
 
 \begin{figure}[H]
  \begin{center}
- \includegraphics[scale=0.8]{density_histogram.pdf}
+ \includegraphics[scale=0.75]{density_histogram.pdf}
  \caption{Comparison of estimator versus population-level values}
  \label{fig2}
  \end{center}
@@ -190,13 +190,13 @@ To test the accuracy of data sampling compared to population-level values, we ca
 
 
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Tue Apr  1 02:12:32 2025
+% Tue Apr  1 12:13:53 2025
 \begin{table}[H]
 \centering
 \begingroup\small
 \begin{tabular}{lrrrr}
   \hline
-Variable & mean & variance & skewness & kurtosis \\ 
+Variable & Mean & Variance & Skewness & Kurtosis \\ 
   \hline
 Alpha = 2, Beta = 5 & 0.29 & 0.03 & 0.57 & 2.78 \\ 
   Alpha = 5, Beta = 5 & 0.50 & 0.02 & 0.06 & 2.54 \\ 
@@ -208,6 +208,28 @@ Alpha = 2, Beta = 5 & 0.29 & 0.03 & 0.57 & 2.78 \\
 \caption{Estimated characteristics of the beta distribution for specified parameters} 
 \label{estim.tab}
 \end{table}
+
+
+Both Figure \ref{fig2} and Table \ref{estim.tab} demonstrate the effectiveness of using an estimator as they produce results similar to the population-level values. However, we later considered how strong of an effect sample size had on the estimator's effectiveness. Using \texttt{cumstats}, I generated Figure \ref{fig3} as estimations of distribution characteristics as sample size increased \citep{cumstats}. Figure \ref{fig4} demonstrates the distribution of estimated characteristics when $n=500$ for different data samples.
+
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.7]{sample_comparison.pdf}
+ \caption{Cumulative characteristic values}
+ \label{fig3}
+ \end{center}
+ \end{figure}
+
+\begin{figure}[H]
+ \begin{center}
+ \includegraphics[scale=0.7]{sampling_distrib.pdf}
+ \caption{Histogram of characteristic values}
+ \label{fig4}
+ \end{center}
+ \end{figure}
+
+In Figure \ref{fig3}, the values are extremely inconsistent for low sample values, which changed considerably on each calculation. As sample size increases, however, the values converge towards the population-level value indicated by the horizontal black line, demonstrating that having a large enough sample size is important for producing reliable data. At this high sample size, we can see that property values stay similar through differing data samples.
+
 
 
 

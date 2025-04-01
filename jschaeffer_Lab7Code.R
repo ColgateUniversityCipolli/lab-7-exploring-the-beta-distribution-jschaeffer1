@@ -271,28 +271,28 @@ sample.df <- tibble(
 sample_summaries = sample.df |>
  summarize(
           #calculating for sample 1
-          sample1_mean = mean(Sample1),
-          sample1_variance = var(Sample1),
-          sample1_skewness = skewness(Sample1),
-          sample1_kurtosis = kurtosis(Sample1),
+          sample1_Mean = mean(Sample1),
+          sample1_Variance = var(Sample1),
+          sample1_Skewness = skewness(Sample1),
+          sample1_Kurtosis = kurtosis(Sample1),
           
           #Calculating for sample 2
-          sample2_mean = mean(Sample2),
-          sample2_variance = var(Sample2),
-          sample2_skewness = skewness(Sample2),
-          sample2_kurtosis = kurtosis(Sample2),
+          sample2_Mean = mean(Sample2),
+          sample2_Variance = var(Sample2),
+          sample2_Skewness = skewness(Sample2),
+          sample2_Kurtosis = kurtosis(Sample2),
           
           #Calculating for sample 3
-          sample3_mean = mean(Sample3),
-          sample3_variance = var(Sample3),
-          sample3_skewness = skewness(Sample3),
-          sample3_kurtosis = kurtosis(Sample3),
+          sample3_Mean = mean(Sample3),
+          sample3_Variance = var(Sample3),
+          sample3_Skewness = skewness(Sample3),
+          sample3_Kurtosis = kurtosis(Sample3),
           
           #Calculating for sample 4
-          sample4_mean = mean(Sample4),
-          sample4_variance = var(Sample4),
-          sample4_skewness = skewness(Sample4),
-          sample4_kurtosis = kurtosis(Sample4)
+          sample4_Mean = mean(Sample4),
+          sample4_Variance = var(Sample4),
+          sample4_Skewness = skewness(Sample4),
+          sample4_Kurtosis = kurtosis(Sample4)
           )|>
   #Reorganizing table
   pivot_longer(cols = everything(), names_to = c("Variable", ".value"), names_sep = "_") |>
@@ -385,7 +385,7 @@ for (i in 2:50){
 
 samplesize.comparison = (mean.plot | var.plot) / (skew.plot | kurt.plot)
 
-
+ggsave("sample_comparison.pdf", plot = samplesize.comparison, width = 4, height = 4)
 
 
 ##############################################
