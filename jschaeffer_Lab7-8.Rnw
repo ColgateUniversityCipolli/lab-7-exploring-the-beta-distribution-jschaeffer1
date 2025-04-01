@@ -80,7 +80,7 @@ print(distrib.table,
 
 
 
-Figure \ref{fig1} showcases the noticeable difference in the shape of the beta distribution depending on parameter values. These differences are reflected in the plots' properties in Table \ref{distrib.tab}. 
+Figure \ref{fig1} showcases the noticeable difference in the shape of the beta distribution depending on parameter values, made through the help of \texttt{tidyverse} and \texttt{patchwork} \citep{tidyverse, patchwork}. These differences are reflected in the plots' properties in Table \ref{distrib.tab}. 
 
 
 \section{Properties}
@@ -118,7 +118,7 @@ To test the accuracy of data sampling compared to population-level values, we ca
 \begin{figure}[H]
  \begin{center}
  \includegraphics[scale=0.75]{density_histogram.pdf}
- \caption{Comparison of estimator versus population-level values}
+ \caption{Estimator versus population-level values}
  \label{fig2}
  \end{center}
  \end{figure}
@@ -129,7 +129,7 @@ source("jschaeffer_Lab7Code.R")
 
 <<size='scriptsize', echo=FALSE, results=FALSE, message = FALSE, warning = FALSE>>=
 library(xtable)
-charac.estim <- xtable(sample_summaries, label="estim.tab", caption="Estimated characteristics of the beta distribution for specified parameters")
+charac.estim <- xtable(sample_summaries, label="estim.tab", caption="Estimated characteristics of the beta distribution")
 @
 
 <<echo=FALSE, results="asis">>=
@@ -159,20 +159,21 @@ In Figure \ref{fig3}, the values are extremely inconsistent for low sample value
 
 
 \section{Example: Death Rates Data}
-To demonstrate the beta distribution's use in real life, I used data from the World Bank on death rates in 2022. 
+To demonstrate the beta distribution's use in real life, I used data from the World Bank on death rates in 2022. I used this data to estimate values for $\alpha$ and $\beta$ using MOM and MLE calculations that relied on \texttt{nleqslv}, and overlayed the beta distribution over a histogram of the death rates data in Figure \ref{fig5} \citep{nleqslv}.
 
 \begin{figure}[H]
  \begin{center}
- \includegraphics[scale=0.7]{estimator_comparison.pdf}
+ \includegraphics[scale=0.45]{estimator_comparison.pdf}
  \caption{Comparison of MLE vs MOM}
  \label{fig5}
  \end{center}
  \end{figure}
  
+Both estimates appear to be a fairly accurate representation of the data, but I then compared the MOM vs MLE estimates to determine which is more accurate with a given $\alpha=8$ and $\beta=950$ and sample sizes $n=266$. The differing methods look near identical in Figre \ref{fig6}, but Table \ref{mommle.tab} reveals that the MLE calculations have lower error for both $\alpha$ and $\beta$. This indicates that MLE is a more effective method for calculating parameters of the beta distribution.
  
  \begin{figure}[H]
  \begin{center}
- \includegraphics[scale=0.45]{estimate_density.pdf}
+ \includegraphics[scale=0.7]{estimate_density.pdf}
  \caption{Density plot of MOM and MLE estimates}
  \label{fig6}
  \end{center}
@@ -196,9 +197,6 @@ print(estimator.sum,
 % Bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{2em}
-
-\noindent\textbf{Bibliography:} Note that when you add citations to your bib.bib file \emph{and}
-you cite them in your document, the bibliography section will automatically populate here.
 
 \begin{tiny}
 \bibliography{bib}
